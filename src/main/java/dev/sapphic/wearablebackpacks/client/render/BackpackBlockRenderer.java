@@ -20,8 +20,8 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.AxisDirection;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 @Environment(EnvType.CLIENT)
 public final class BackpackBlockRenderer implements BlockEntityRenderer<BackpackBlockEntity> {
@@ -42,9 +42,9 @@ public final class BackpackBlockRenderer implements BlockEntityRenderer<Backpack
     final VertexConsumer pipeline = ItemRenderer.getDirectItemGlintConsumer(pipelines, TexturedRenderLayers.getEntityCutout(), true, backpack.hasGlint());
     final BakedModel backpackModel = models.getModel(backpack.getCachedState());
     final BakedModel lidModel = models.getModelManager().getModel(BackpacksClient.getLidModel(facing));
-    final Vec3f unitVector = facing.rotateYClockwise().getUnitVector();
-    final Quaternion rotation = unitVector.getDegreesQuaternion(45.0F * backpack.getLidDelta(tickDelta));
-    
+    final Vector3f unitVector = facing.rotateYClockwise().getUnitVector();
+    final Quaternionf rotation = new Quaternionf().fromAxisAngleDeg(unitVector, 45.0F * backpack.getLidDelta(tickDelta));
+
     final int color = backpack.getColor();
     final float red = ((color >> 16) & 0xFF) / 255.0F;
     final float green = ((color >> 8) & 0xFF) / 255.0F;

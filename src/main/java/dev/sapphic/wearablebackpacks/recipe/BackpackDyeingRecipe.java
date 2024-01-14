@@ -5,6 +5,7 @@ import dev.sapphic.wearablebackpacks.item.BackpackItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
@@ -12,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -29,19 +32,18 @@ import java.util.List;
 public final class BackpackDyeingRecipe extends SpecialCraftingRecipe {
   public static final Identifier ID = new Identifier(Backpacks.ID, "backpack_dyeing");
   
-  public static final SpecialRecipeSerializer<BackpackDyeingRecipe> SERIALIZER =
-    new SpecialRecipeSerializer<>(BackpackDyeingRecipe::new);
-  
-  private BackpackDyeingRecipe(final Identifier id) {
-    super(id);
+  public static final SpecialRecipeSerializer<BackpackDyeingRecipe> SERIALIZER = new SpecialRecipeSerializer<>(BackpackDyeingRecipe::new);
+
+  private BackpackDyeingRecipe(final Identifier id, CraftingRecipeCategory category) {
+    super(id, category);
   }
   
   @Override
-  public boolean matches(final CraftingInventory matrix, final World world) {
+  public boolean matches(final RecipeInputInventory inventory, final World world) {
     ItemStack backpack = ItemStack.EMPTY;
     final Collection<ItemStack> dyes = new ArrayList<>(1);
-    for (int slot = 0; slot < matrix.size(); ++slot) {
-      final ItemStack stack = matrix.getStack(slot);
+    for (int slot = 0; slot < inventory.size(); ++slot) {
+      final ItemStack stack = inventory.getStack(slot);
       if (!stack.isEmpty()) {
         if (stack.getItem() instanceof BackpackItem) {
           if (!backpack.isEmpty()) {
@@ -60,11 +62,12 @@ public final class BackpackDyeingRecipe extends SpecialCraftingRecipe {
   }
   
   @Override
-  public ItemStack craft(final CraftingInventory matrix) {
+  public
+  ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
     ItemStack backpack = ItemStack.EMPTY;
     final List<DyeItem> dyes = new ArrayList<>(1);
-    for (int slot = 0; slot < matrix.size(); ++slot) {
-      final ItemStack stack = matrix.getStack(slot);
+    for (int slot = 0; slot < inventory.size(); ++slot) {
+      final ItemStack stack = inventory.getStack(slot);
       if (!stack.isEmpty()) {
         final Item item = stack.getItem();
         if (item instanceof BackpackItem) {

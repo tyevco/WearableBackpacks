@@ -4,6 +4,7 @@ import dev.sapphic.wearablebackpacks.Backpack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -17,13 +18,13 @@ final class BackpackMaterial implements ArmorMaterial {
   }
   
   @Override
-  public int getDurability(final EquipmentSlot slot) {
-    return (slot == EquipmentSlot.CHEST) ? Backpack.getMaxDamage() : 0;
+  public int getDurability(final ArmorItem.Type slot) {
+    return (slot == ArmorItem.Type.CHESTPLATE) ? Backpack.getMaxDamage() : 0;
   }
   
   @Override
-  public int getProtectionAmount(final EquipmentSlot slot) {
-    return (slot == EquipmentSlot.CHEST) ? Backpack.getDefense() : 0;
+  public int getProtection(final ArmorItem.Type slot) {
+    return (slot == ArmorItem.Type.CHESTPLATE) ? Backpack.getDefense() : 0;
   }
   
   @Override

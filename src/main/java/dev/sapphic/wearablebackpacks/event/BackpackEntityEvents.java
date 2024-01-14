@@ -55,7 +55,7 @@ public final class BackpackEntityEvents {
     final ItemStack stack = ((LivingEntity) wearer).getEquippedStack(EquipmentSlot.CHEST);
     if ((stack.getItem() instanceof BackpackItem) && canOpenBackpack(self, (LivingEntity) wearer)) {
       if (world.isClient) {
-        final float pitch = (self.world.random.nextFloat() * 0.1F) + 0.9F;
+        final float pitch = (self.getWorld().random.nextFloat() * 0.1F) + 0.9F;
         self.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F, pitch);
       } else {
         self.openHandledScreen(WornBackpack.of((LivingEntity) wearer, stack));

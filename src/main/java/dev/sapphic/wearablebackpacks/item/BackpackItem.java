@@ -49,7 +49,9 @@ public final class BackpackItem extends DyeableArmorItem {
   private final Block block;
   
   public BackpackItem(final Block block, final Settings settings) {
-    super(BackpackMaterial.INSTANCE, Backpacks.config.enableChestArmorEquip ?  EquipmentSlot.CHEST : EquipmentSlot.MAINHAND, settings);
+    super(BackpackMaterial.INSTANCE,
+            Type.CHESTPLATE,
+            settings);
     Validate.isInstanceOf(BackpackBlock.class, block);
     this.block = block;
   }
@@ -145,12 +147,12 @@ public final class BackpackItem extends DyeableArmorItem {
     this.block.appendTooltip(stack, world, tooltip, context);
   }
   
-  @Override
-  public void appendStacks(final ItemGroup group, final DefaultedList<ItemStack> stacks) {
-    if (this.isIn(group)) {
-      this.block.appendStacks(group, stacks);
-    }
-  }
+//  @Override
+//  public void appendStacks(final ItemGroup group, final DefaultedList<ItemStack> stacks) {
+//    if (this.isIn(group)) {
+//      this.block.appendStacks(group, stacks);
+//    }
+//  }
   
   private @Nullable BlockState getPlacementState(final ItemPlacementContext context) {
     final @Nullable BlockState state = this.block.getPlacementState(context);

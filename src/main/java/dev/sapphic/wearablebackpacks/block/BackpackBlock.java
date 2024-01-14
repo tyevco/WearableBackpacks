@@ -41,7 +41,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.DefaultedList;
@@ -136,7 +136,7 @@ public final class BackpackBlock extends BlockWithEntity implements Waterloggabl
             }
             backpack.setColor(newColor);
             world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, player.getSoundCategory(),
-              0.5F, (player.world.random.nextFloat() * 0.1F) + 0.9F
+              0.5F, (player.getWorld().random.nextFloat() * 0.1F) + 0.9F
             );
             if (!player.getAbilities().creativeMode) {
               stack.decrement(1);
@@ -225,7 +225,7 @@ public final class BackpackBlock extends BlockWithEntity implements Waterloggabl
   
   @Override
   public @Nullable BlockState getPlacementState(final ItemPlacementContext context) {
-    final Direction facing = context.getPlayerFacing().getOpposite();
+    final Direction facing = context.getHorizontalPlayerFacing().getOpposite();
     final Fluid fluid = context.getWorld().getFluidState(context.getBlockPos()).getFluid();
     return this.getDefaultState().with(FACING, facing).with(WATERLOGGED, fluid == Fluids.WATER);
   }

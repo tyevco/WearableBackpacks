@@ -1,8 +1,11 @@
 package dev.sapphic.wearablebackpacks.inventory;
 
+import dev.sapphic.wearablebackpacks.recipe.BackpackDyeingRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -88,7 +91,7 @@ public final class BackpackMenu extends ScreenHandler {
   }
   
   @Override
-  public ItemStack transferSlot(final PlayerEntity player, final int index) {
+  public ItemStack quickMove(final PlayerEntity player, final int index) {
     ItemStack original = ItemStack.EMPTY;
     final Slot slot = this.slots.get(index);
     if ((slot != null) && slot.hasStack()) {
@@ -112,11 +115,13 @@ public final class BackpackMenu extends ScreenHandler {
       slot.onTakeItem(player, stack);
     }
     return original;
-  }  public static final ScreenHandlerType<BackpackMenu> TYPE = new ScreenHandlerType<>(BackpackMenu::new);
-  
+  }
+
+  public static final ScreenHandlerType<BackpackMenu> TYPE = new ScreenHandlerType<>(BackpackMenu::new, FeatureSet.empty());
+
   @Override
-  public void close(final PlayerEntity player) {
-    super.close(player);
+  public void onClosed(final PlayerEntity player) {
+    super.onClosed(player);
     this.backpack.onClose(player);
   }
   

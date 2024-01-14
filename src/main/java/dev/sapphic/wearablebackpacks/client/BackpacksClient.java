@@ -53,8 +53,8 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
@@ -105,7 +105,7 @@ public final class BackpacksClient implements ClientModInitializer {
     
     stack.push();
     stack.translate(0.0, entity.isInSneakingPose() ? 0.2 : 0.0, 0.0);
-    stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch));
+    stack.multiply(new Quaternionf().fromAxisAngleDeg(new Vector3f(1, 0, 0), pitch));
     stack.scale(0.8F, 0.8F, 0.8F);
     stack.translate(-0.5, -0.5 - (0.0625 * 4), -0.5 - (0.0625 * 5.5));
     renderer.render(stack.peek(), pipeline, null, backpackModel, red, green, blue, light, OverlayTexture.DEFAULT_UV);
@@ -115,7 +115,7 @@ public final class BackpacksClient implements ClientModInitializer {
     final double zPivot = 1.0 - 0.3125;
     //noinspection CastToIncompatibleInterface
     final float lidDelta = ((BackpackWearer) entity).getBackpackState().lidDelta(tickDelta());
-    final Quaternion rotation = Direction.EAST.getUnitVector().getDegreesQuaternion(45.0F * lidDelta);
+    final Quaternionf rotation = new Quaternionf().fromAxisAngleDeg(Direction.EAST.getUnitVector(), 45.0F * lidDelta);
     
     stack.push();
     stack.translate(xPivot, yPivot, zPivot);
@@ -157,11 +157,11 @@ public final class BackpacksClient implements ClientModInitializer {
   }
   
   private static void pollBackpackKey(final MinecraftClient client) {
-    if ((client.player != null) && client.player.world.isClient) {
+    if ((client.player != null) && client.player.clientWorld.isClient) {
       while (BACKPACK_KEY_BINDING.wasPressed()) {
         final ItemStack stack = client.player.getEquippedStack(EquipmentSlot.CHEST);
         if (stack.getItem() instanceof BackpackItem) {
-          final float pitch = (client.player.world.random.nextFloat() * 0.1F) + 0.9F;
+          final float pitch = (client.player.clientWorld.random.nextFloat() * 0.1F) + 0.9F;
           client.player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F, pitch);
           BackpackClientNetwork.tryOpenOwnBackpack();
         }

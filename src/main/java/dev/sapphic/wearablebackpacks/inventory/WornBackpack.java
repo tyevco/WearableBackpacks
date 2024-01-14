@@ -141,10 +141,10 @@ public final class WornBackpack implements BackpackContainer {
   public void onClose(final PlayerEntity player) {
     this.markDirty();
     final LivingEntity source = (this.wearer != null) ? this.wearer : player;
-    if (!source.world.isClient) {
-      source.world.playSound(null, source.getX(), source.getY(), source.getZ(),
+    if (!source.getWorld().isClient) {
+      source.getWorld().playSound(null, source.getX(), source.getY(), source.getZ(),
         SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, source.getSoundCategory(),
-        0.5F, (source.world.random.nextFloat() * 0.1F) + 0.9F
+        0.5F, (source.getWorld().random.nextFloat() * 0.1F) + 0.9F
       );
       BackpackWearer.getBackpackState(source).closed();
     }
